@@ -3383,7 +3383,7 @@ if not game:GetService("CoreGui"):FindFirstChild("StatBySmell") then
 	end);
 	task.spawn(function()
 		pcall(function()
-			while wait() do
+			while wait(1) do
 				pcall(function()
 					if (tonumber(frames) < 10) then
 						labels.Frame["1FPSCount"].IconButton.IconLabel.TextColor3 = Color3.fromRGB(255, 0, 0);
