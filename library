@@ -3377,39 +3377,39 @@ if not game:GetService("CoreGui"):FindFirstChild("StatBySmell") then
 	script.Parent = GuiStat;
 	local labels = script.Parent;
 	local RS = game:GetService("RunService");
-	local frames = 0;
-	RS.RenderStepped:Connect(function()
-		frames = frames + 1;
-	end);
-	task.spawn(function()
-		pcall(function()
-			while wait(1) do
-				pcall(function()
-					if (tonumber(frames) < 10) then
-						labels.Frame["1FPSCount"].IconButton.IconLabel.TextColor3 = Color3.fromRGB(255, 0, 0);
-					elseif (tonumber(frames) <= 30) then
-						labels.Frame["1FPSCount"].IconButton.IconLabel.TextColor3 = Color3.fromRGB(255, 255, 0);
-					elseif (tonumber(frames) > 30) then
-						labels.Frame["1FPSCount"].IconButton.IconLabel.TextColor3 = Color3.fromRGB(0, 255, 0);
-					end
-					labels.Frame["1FPSCount"].IconButton.IconLabel.Text = "FPS " .. frames;
-					frames = 0;
-					local ping = math.round(tonumber(string.split(game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString(), "(")[1]));
-					labels.Frame["3PingCount"].IconButton.IconLabel.Text = "Ping: " .. ping .. " ms";
-					if (ping < 100) then
-						labels.Frame["3PingCount"].IconButton.IconLabel.TextColor3 = Color3.fromRGB(0, 255, 0);
-					elseif (ping < 200) then
-						labels.Frame["3PingCount"].IconButton.IconLabel.TextColor3 = Color3.fromRGB(255, 255, 0);
-					elseif (ping < 300) then
-						labels.Frame["3PingCount"].IconButton.IconLabel.TextColor3 = Color3.fromRGB(255, 150, 0);
-					elseif (ping < 400) then
-						labels.Frame["3PingCount"].IconButton.IconLabel.TextColor3 = Color3.fromRGB(255, 100, 0);
-					elseif (ping < 500) then
-						labels.Frame["3PingCount"].IconButton.IconLabel.TextColor3 = Color3.fromRGB(255, 0, 0);
-					end
-				end);
-			end
-		end);
+    local startTime, counter, oldfps = os.clock(), 0, nil;
+	game:GetService("RunService").Heartbeat:Connect(function()
+        local currentTime = os.clock();
+        counter = counter + 1;
+        if ((currentTime - startTime) >= 1) then
+            local fps = math.floor(counter / (currentTime - startTime));
+            counter = 0;
+            startTime = currentTime;
+            if (fps ~= oldfps) then
+                if (tonumber(fps) < 10) then
+                    labels.Frame["1FPSCount"].IconButton.IconLabel.TextColor3 = Color3.fromRGB(255, 0, 0);
+                elseif (tonumber(fps) <= 30) then
+                    labels.Frame["1FPSCount"].IconButton.IconLabel.TextColor3 = Color3.fromRGB(255, 255, 0);
+                elseif (tonumber(fps) > 30) then
+                    labels.Frame["1FPSCount"].IconButton.IconLabel.TextColor3 = Color3.fromRGB(0, 255, 0);
+                end
+                labels.Frame["1FPSCount"].IconButton.IconLabel.Text = "FPS " .. fps;
+                local ping = math.round(tonumber(string.split(game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString(), "(")[1]));
+                labels.Frame["3PingCount"].IconButton.IconLabel.Text = "Ping: " .. ping .. " ms";
+                if (ping < 100) then
+                    labels.Frame["3PingCount"].IconButton.IconLabel.TextColor3 = Color3.fromRGB(0, 255, 0);
+                elseif (ping < 200) then
+                    labels.Frame["3PingCount"].IconButton.IconLabel.TextColor3 = Color3.fromRGB(255, 255, 0);
+                elseif (ping < 300) then
+                    labels.Frame["3PingCount"].IconButton.IconLabel.TextColor3 = Color3.fromRGB(255, 150, 0);
+                elseif (ping < 400) then
+                    labels.Frame["3PingCount"].IconButton.IconLabel.TextColor3 = Color3.fromRGB(255, 100, 0);
+                elseif (ping > 500) then
+                    labels.Frame["3PingCount"].IconButton.IconLabel.TextColor3 = Color3.fromRGB(255, 0, 0);
+                end
+            end
+            oldfps = fps;
+        end
 	end);
 end
 if not game:GetService("CoreGui"):FindFirstChild("Credit") then
@@ -3469,7 +3469,7 @@ if not game:GetService("CoreGui"):FindFirstChild("Credit") then
 	TexT.TextColor3 = Color3.fromRGB(255, 0, 4);
 	TexT.TextScaled = true;
 	TexT.TextWrapped = true;
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/SmellLikeHacker/IDK/main/Notification"))();
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/DevSoGod/MyScript/main/Notification"))();
     wait()
     Notification(1, "SmellLikehacker Hub", "Executed!", 10);
 end
