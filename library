@@ -373,13 +373,10 @@ library.CreateWindow = function(self, name, hidebutton)
 	updateevent.Event:Connect(function(theme)
 		window.Frame.BackgroundColor3 = theme.backgroundcolor;
 	end);
+    _G.window = window.Frame
 	uis.InputBegan:Connect(function(key)
 		if (key.KeyCode == window.hidebutton) then
-			for i, v in pairs(game:GetService("CoreGui"):GetChildren()) do
-				if v:FindFirstChild("main") then
-					v.main.Visible = not v.main.Visible;
-				end
-			end
+			_G.window.Visible = not _G.window.Visible;
 		end
 	end);
 	local function checkIfGuiInFront(Pos)
@@ -3372,11 +3369,7 @@ if not game:GetService("CoreGui"):FindFirstChild("StatBySmell") then
 	IconLabel_3.TextXAlignment = Enum.TextXAlignment.Left;
 	UICorner_3.Parent = IconButton_3;
 	IconButton_3.MouseButton1Click:Connect(function()
-		for i, v in pairs(game:GetService("CoreGui"):GetChildren()) do
-			if v:FindFirstChild("main") then
-				v.main.Visible = not v.main.Visible;
-			end
-		end
+		_G.window.Visible = not _G.window.Visible;
 	end);
 	RainbowText(IconLabel_3);
 	RainbowImage(IconImage);
@@ -3390,7 +3383,7 @@ if not game:GetService("CoreGui"):FindFirstChild("StatBySmell") then
 	end);
 	task.spawn(function()
 		pcall(function()
-			while wait(1) do
+			while wait() do
 				pcall(function()
 					if (tonumber(frames) < 10) then
 						labels.Frame["1FPSCount"].IconButton.IconLabel.TextColor3 = Color3.fromRGB(255, 0, 0);
