@@ -1,0 +1,8 @@
+repeat wait() until game:IsLoaded() and pcall(function() local _ = game.HttpGet end);
+if game.PlaceId == 6938803436 or game.PlaceId == 6990129309 or game.PlaceId == 6990133340 or game.PlaceId == 6990131029 or game.PlaceId == 7338881230 or game.PlaceId == 7274690025 then
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/DevSoGod/MyScript/main/AnimeDimensions"))()
+else
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/DevSoGod/MyScript/main/Notification"))()
+    wait()
+    Notification(1, "SmellLikehacker Hub", "GameNotfound", 10)
+end
