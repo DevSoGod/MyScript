@@ -3,6 +3,8 @@ if game.PlaceId == 6938803436 or game.PlaceId == 6990129309 or game.PlaceId == 6
     loadstring(game:HttpGet("https://raw.githubusercontent.com/DevSoGod/MyScript/main/AnimeDimensions"))()
 elseif game.PlaceId == 8811271345 or game.PlaceId == 8811375357 or game.PlaceId == 8829364740 or game.PlaceId == 8830255143 or game.PlaceId == 8848036047 or game.PlaceId == 8898827396 or game.PlaceId == 9032150459 or game.PlaceId == 9034159990 or game.PlaceId == 9036392973 or game.PlaceId == 9088363085 or game.PlaceId == 9169451769 or game.PlaceId == 9169452979 or game.PlaceId == 9169455659 or game.PlaceId == 9280551080 or game.PlaceId == 9301650845 or game.PlaceId == 9326753319 or game.PlaceId == 9353614255 or game.PlaceId == 9519390001 or game.PlaceId == 9755250123 or game.PlaceId == 10205913343 or game.PlaceId == 10228957718 or game.PlaceId == 10984614431 or game.PlaceId == 11175531925 or game.PlaceId == 11947222655 or game.PlaceId == 11959131433 or game.PlaceId == 12033513313 or game.PlaceId == 12981871233 then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/DevSoGod/MyScript/main/BalancedCraftwars"))()
+elseif game.PlaceId == 5130598377 or game.PlaceId == 6846458508 or game.PlaceId == 8008202756 or game.PlaceId == 8023712967  then
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/DevSoGod/MyScript/main/AUniversalTime"))()
 else
     loadstring(game:HttpGet("https://raw.githubusercontent.com/DevSoGod/MyScript/main/Notification"))()
     wait()
