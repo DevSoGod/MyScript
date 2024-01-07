@@ -332,6 +332,7 @@ library.CreateWindow = function(self, name, hidebutton)
 	end;
 	window.Main = Instance.new("ScreenGui", coregui);
 	window.Main.Name = name;
+    window.Main.ResetOnSpawn = false;
 	window.Main.DisplayOrder = 15;
 	if getgenv().uilib then
 		getgenv().uilib:Remove();
