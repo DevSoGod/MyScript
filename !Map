@@ -5,6 +5,8 @@ elseif game.PlaceId == 8811271345 or game.PlaceId == 8811375357 or game.PlaceId 
     loadstring(game:HttpGet("https://raw.githubusercontent.com/DevSoGod/MyScript/main/BalancedCraftwars"))()
 elseif game.PlaceId == 5130598377 or game.PlaceId == 6846458508 or game.PlaceId == 8008202756 or game.PlaceId == 8023712967  then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/DevSoGod/MyScript/main/AUniversalTime"))()
+elseif game.PlaceId == 8534845015 or game.PlaceId == 15552367548 then
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/DevSoGod/MyScript/main/SakuraStand"))()
 elseif game.PlaceId == 537413528 then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/DevSoGod/MyScript/main/BuildABoat"))()
 else
