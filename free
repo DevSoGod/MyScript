@@ -10,6 +10,9 @@ end)
 Sector:AddToggle("GildedCoin", false, function(t)
     _G.GildedCoin = t
 end)
+Sector:AddToggle("AutoPickUp", false, function(t)
+    _G.AutoPickUp = t
+end)
 Sector:AddToggle("Collections", false, function(t)
     for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.AuraWiki.WikiBase.Holder:GetChildren()) do
         if v.Name == "Item" then
@@ -18,6 +21,25 @@ Sector:AddToggle("Collections", false, function(t)
         end
     end
 end)
+local Sector = Tab:CreateSector("Section2", "Right")
+items = {}
+for i,v in pairs(game:GetService("ReplicatedStorage").ItemPreviewModels:GetChildren()) do
+    table.insert(items,v.Name)
+end
+Sector:AddDropdown("Select Items",items,false, true, function(t)
+    _G.Items = t
+end)
+Sector:AddTextbox("Cooldown" , "1" , function(w)
+    _G.Cooldown = w
+end)
+Sector:AddToggle("AutoUseItem", false, function(t)
+    _G.AutoUseItem = t
+end)
+
+
+
+
+
 spawn(function()
     pcall(function()
         while task.wait() do
@@ -26,6 +48,23 @@ spawn(function()
                     pcall(function()
                         for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
                             v.Parent = game.Players.LocalPlayer.Character
+                        end
+                    end)
+                end
+            end)
+        end
+    end)
+end)
+spawn(function()
+    pcall(function()
+        while task.wait() do
+            pcall(function()
+                if _G.AutoPickUp then
+                    pcall(function()
+                        for i,v in pairs(workspace.DroppedItems:GetDescendants()) do
+                            if v.ClassName == "ProximityPrompt" then
+                                fireproximityprompt(v)
+                            end
                         end
                     end)
                 end
@@ -51,6 +90,34 @@ spawn(function()
         end
     end)
 end)
+spawn(function()
+    pcall(function()
+        while wait(tonumber(_G.Cooldown)) do
+            pcall(function()
+                if _G.AutoUseItem then
+                    pcall(function()
+                        for i,v in pairs(_G.Items) do
+                            local args = {
+                                [1] = v,
+                                [2] = 1
+                            }
+                            
+                            game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Inventory"):WaitForChild("UseItem"):FireServer(unpack(args))
+                            local args = {
+                                [1] = v
+                            }
+                            
+                            game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Inventory"):WaitForChild("EquipItem"):FireServer(unpack(args))
+                        end
+                    end)
+                end
+            end)
+        end
+    end)
+end)
+
+
+
 
 local Tab = Window:CreateTab("Misc")
 local Sector = Tab:CreateSector("Section1", "left")
