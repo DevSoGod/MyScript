@@ -287,7 +287,7 @@ spawn(function()
     getgenv().rejoin = game:GetService("CoreGui").RobloxPromptGui.promptOverlay.ChildAdded:Connect(function(Kick)
         if ((Kick.Name == "ErrorPrompt") and Kick:FindFirstChild("MessageArea") and Kick.MessageArea:FindFirstChild("ErrorFrame")) then
             if _G.rejoinKick == true then
-                game:GetService("TeleportService"):Teleport(7338881230)
+                HopServer()
             end
         end
     end)
