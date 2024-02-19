@@ -13,6 +13,9 @@ end)
 Sector:AddToggle("AutoPickUp", false, function(t)
     _G.AutoPickUp = t
 end)
+Sector:AddToggle("AutoTurnOnAutoRoll", false, function(t)
+    _G.AutoTurnOnAutoRoll = t
+end)
 Sector:AddToggle("Collections", false, function(t)
     for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.AuraWiki.WikiBase.Holder:GetChildren()) do
         if v.Name == "Item" then
@@ -38,8 +41,28 @@ end)
 
 
 
-
-
+spawn(function()
+    pcall(function()
+        while wait() do
+            pcall(function()
+                if _G.AutoTurnOnAutoRoll then
+                    pcall(function()
+                        if game:GetService("Players").LocalPlayer.PlayerGui.MainInterface.AutoRoll.Text ~= "Auto roll : ON" then
+                            game:GetService("GuiService").SelectedObject = game:GetService("Players").LocalPlayer.PlayerGui.MainInterface.AutoRoll
+                            wait(.1)
+                            game:GetService("VirtualInputManager"):SendKeyEvent(true, 13, false, game.Players.LocalPlayer.Character.HumanoidRootPart)
+                            wait(.1)
+                            game:GetService("VirtualInputManager"):SendKeyEvent(false, 13, false, game.Players.LocalPlayer.Character.HumanoidRootPart)
+                            wait(.1)
+                            game:GetService("GuiService").SelectedObject = nil
+                            wait(1)
+                        end
+                    end)
+                end
+            end)
+        end
+    end)
+end)
 spawn(function()
     pcall(function()
         while task.wait() do
