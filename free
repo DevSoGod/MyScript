@@ -4,8 +4,8 @@ local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/DevSo
 local Window = library:CreateWindow("SmellLikeHacker | ".."sol".." | V1")
 local Tab = Window:CreateTab("Main")
 local Sector = Tab:CreateSector("Section1", "left")
-Sector:AddToggle("Multi Equip", false, function(t)
-    _G.MultiEquip = t
+Sector:AddToggle("Auto Equip", false, function(t)
+    _G.AutoEquip = t
 end)
 Sector:AddToggle("GildedCoin", false, function(t)
     _G.GildedCoin = t
@@ -67,10 +67,12 @@ spawn(function()
     pcall(function()
         while task.wait() do
             pcall(function()
-                if _G.MultiEquip then
+                if _G.AutoEquip then
                     pcall(function()
                         for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
-                            v.Parent = game.Players.LocalPlayer.Character
+                            if not game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Tool") then
+                                v.Parent = game.Players.LocalPlayer.Character
+                            end
                         end
                     end)
                 end
