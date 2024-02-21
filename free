@@ -77,18 +77,16 @@ spawn(function()
             end)
         end
     end)
-end)
+end) 
 spawn(function()
     pcall(function()
-        while task.wait() do
+        while wait() do
             pcall(function()
                 if _G.AutoPickUp then
                     pcall(function()
-                        for i,v in pairs(workspace.DroppedItems:GetDescendants()) do
-                            if v.ClassName == "ProximityPrompt" then
-                                fireproximityprompt(v)
-                            end
-                        end
+                        game:GetService("VirtualInputManager"):SendKeyEvent(true, "F", false, game.Players.LocalPlayer.Character.HumanoidRootPart)
+                        wait(.1)
+                        game:GetService("VirtualInputManager"):SendKeyEvent(false, "F", false, game.Players.LocalPlayer.Character.HumanoidRootPart)
                     end)
                 end
             end)
@@ -379,9 +377,9 @@ game:GetService("Players").LocalPlayer.Idled:connect(function()
     game:GetService("VirtualUser"):CaptureController()
     game:GetService("VirtualUser"):ClickButton2(Vector2.new())
 end)
-library:ConfigSystem("sol"):Load()
+library:ConfigSystem("solRNG"):Load()
 while wait(1) do
     pcall(function()
-        library:ConfigSystem("sol"):Save()
+        library:ConfigSystem("solRNG"):Save()
     end)
 end
