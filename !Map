@@ -9,6 +9,8 @@ elseif game.PlaceId == 8534845015 or game.PlaceId == 15552367548 then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/DevSoGod/MyScript/main/SakuraStand"))()
 elseif game.PlaceId == 537413528 then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/DevSoGod/MyScript/main/BuildABoat"))()
+elseif game.PlaceId == 10515146389 or game.PlaceId == 10771129745 or game.PlaceId == 13735670606 or game.PlaceId == 13947021673 or game.PlaceId == 14013060539 or game.PlaceId == 15278089327 or game.PlaceId == 15581054308 then
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/DevSoGod/MyScript/main/ElementalDungeons"))()
 else
     loadstring(game:HttpGet("https://raw.githubusercontent.com/DevSoGod/MyScript/main/Notification"))()
     wait()
