@@ -82,7 +82,9 @@ spawn(function()
     pcall(function()
         while wait() do
             if _G.AutoFarm then
-                WalkToPlr()
+                pcall(function()
+                    WalkToPlr()
+                end)
             end
         end
     end)
@@ -91,9 +93,11 @@ spawn(function()
     pcall(function()
         while wait() do
             if _G.AutoFarm then
-                game:GetService("VirtualInputManager"):SendKeyEvent(true, "F", false, game.Players.LocalPlayer)
-                game:GetService("VirtualInputManager"):SendKeyEvent(false, "F", false, game.Players.LocalPlayer)
-                wait()
+                pcall(function()
+                    game:GetService("VirtualInputManager"):SendKeyEvent(true, "F", false, game.Players.LocalPlayer)
+                    game:GetService("VirtualInputManager"):SendKeyEvent(false, "F", false, game.Players.LocalPlayer)
+                    wait()
+                end)
             end
         end
     end)
@@ -102,16 +106,18 @@ spawn(function()
     pcall(function()
         while wait() do
             if _G.AutoRoll then
-                if game:GetService("Players").LocalPlayer.PlayerGui.MainInterface.AutoRoll.Context.Text ~= "Auto roll : ON" then
-                    game:GetService("GuiService").SelectedObject = game:GetService("Players").LocalPlayer.PlayerGui.MainInterface.AutoRoll
-                    if game:GetService("GuiService").SelectedObject == game:GetService("Players").LocalPlayer.PlayerGui.MainInterface.AutoRoll then
-                        wait(1)
-                        game:GetService("VirtualInputManager"):SendKeyEvent(true, 13, false, game.Players.LocalPlayer)
-                        game:GetService("VirtualInputManager"):SendKeyEvent(false, 13, false, game.Players.LocalPlayer)
-                        wait()
+                pcall(function()
+                    if game:GetService("Players").LocalPlayer.PlayerGui.MainInterface.AutoRoll.Context.Text ~= "Auto roll : ON" then
+                        game:GetService("GuiService").SelectedObject = game:GetService("Players").LocalPlayer.PlayerGui.MainInterface.AutoRoll
+                        if game:GetService("GuiService").SelectedObject == game:GetService("Players").LocalPlayer.PlayerGui.MainInterface.AutoRoll then
+                            wait(1)
+                            game:GetService("VirtualInputManager"):SendKeyEvent(true, 13, false, game.Players.LocalPlayer)
+                            game:GetService("VirtualInputManager"):SendKeyEvent(false, 13, false, game.Players.LocalPlayer)
+                            wait()
+                        end
+                        game:GetService("GuiService").SelectedObject = nil
                     end
-                    game:GetService("GuiService").SelectedObject = nil
-                end
+                end)
             end
         end
     end)
@@ -133,7 +139,24 @@ task.spawn(function()
 	end
 end)
 
-
+spawn(function()
+    pcall(function()
+        while wait() do
+            pcall(function()
+                if game:GetService("Players").LocalPlayer.PlayerGui.BeforePlaying.LoadingFrame.Start.Visible == true then
+                    game:GetService("GuiService").SelectedObject = game:GetService("Players").LocalPlayer.PlayerGui.BeforePlaying.LoadingFrame.Start
+                    if game:GetService("GuiService").SelectedObject == game:GetService("Players").LocalPlayer.PlayerGui.BeforePlaying.LoadingFrame.Start then
+                        wait(1)
+                        game:GetService("VirtualInputManager"):SendKeyEvent(true, 13, false, game.Players.LocalPlayer)
+                        game:GetService("VirtualInputManager"):SendKeyEvent(false, 13, false, game.Players.LocalPlayer)
+                        wait()
+                    end
+                    game:GetService("GuiService").SelectedObject = nil
+                end
+            end)
+        end
+    end)
+end)
 
 
 
