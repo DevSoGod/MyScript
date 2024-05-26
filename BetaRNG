@@ -10,17 +10,19 @@ end)
 Sector:AddToggle("Auto Turn AutoRoll (GamePass)", false, function(t)
     _G.AutoRoll = t
 end)
+Sector:AddToggle("ESP Items", false, function(t)
+    _G.ESP = t
+end)
+Sector:AddToggle("SpinBiome", false, function(t)
+    _G.SpinBiome = t
+end)
 
 
 local RecalDis = 5
 local currpath = game:GetService("PathfindingService"):CreatePath({["WaypointSpacing"] = 5})
-
--- Temp Vars
 local ClosestPlr
 local InitialPosition
 local WalkToObject
-
--- Get Closest plr
 local function getClosestwalk()
     local dist, thing = math.huge
     for i, v in next, workspace.DroppedItems:GetChildren() do
@@ -40,7 +42,6 @@ local function getClosestwalk()
     end
 return thing
 end
-
 WalkToObject = function()
 	if ClosestPlr and ClosestPlr then
 		local CRoot = ClosestPlr
@@ -71,8 +72,6 @@ WalkToObject = function()
 		end
 	end
 end
-
--- Walk to the Plr
 local function WalkToPlr()
 	ClosestPlr = getClosestwalk()
 	WalkToObject(ClosestPlr)
@@ -157,6 +156,67 @@ spawn(function()
         end
     end)
 end)
+spawn(function() 
+    pcall(function()
+        while wait() do
+            if _G.ESP then
+                pcall(function()
+                    for i, v in next, workspace.DroppedItems:GetChildren() do
+                        if v.ClassName == "Part" or v.ClassName == "UnionOperation" and not v:FindFirstChildOfClass("BillboardGui") then
+                            local BillboardGui = Instance.new("BillboardGui")
+                            local TextLabel = Instance.new("TextLabel")
+                            BillboardGui.Parent = v
+                            BillboardGui.AlwaysOnTop = true
+                            BillboardGui.Size = UDim2.new(0, 50, 0, 50)
+                            BillboardGui.StudsOffset = Vector3.new(0, 2, 0)
+                            TextLabel.Parent = BillboardGui
+                            TextLabel.BackgroundColor3 = Color3.new(1, 1, 1)
+                            TextLabel.BackgroundTransparency = 1
+                            TextLabel.Size = UDim2.new(1, 0, 1, 0)
+                            TextLabel.Text = v.Name
+                            TextLabel.TextColor3 = Color3.new(1, 0, 0)
+                            TextLabel.TextScaled = true
+                        elseif v.ClassName == "Model" and not v:FindFirstChildOfClass("BillboardGui") then
+                            local BillboardGui = Instance.new("BillboardGui")
+                            local TextLabel = Instance.new("TextLabel")
+                            BillboardGui.Parent = v:FindFirstChildOfClass("Part")
+                            BillboardGui.AlwaysOnTop = true
+                            BillboardGui.Size = UDim2.new(0, 50, 0, 50)
+                            BillboardGui.StudsOffset = Vector3.new(0, 2, 0)
+                            TextLabel.Parent = BillboardGui
+                            TextLabel.BackgroundColor3 = Color3.new(1, 1, 1)
+                            TextLabel.BackgroundTransparency = 1
+                            TextLabel.Size = UDim2.new(1, 0, 1, 0)
+                            TextLabel.Text = v.Name
+                            TextLabel.TextColor3 = Color3.new(1, 0, 0)
+                            TextLabel.TextScaled = true
+                        end
+                    end
+                end)
+            end
+        end
+    end)
+end)
+spawn(function()
+    pcall(function()
+        while wait() do
+            pcall(function()
+                if _G.SpinBiome then
+                    for i,v in pairs({'Biome Randomizer','Strange Controller'}) do
+                        if game:GetService("Players").LocalPlayer.PlayerGui.MainInterface.CurrentTime.Weather.Text == "[ Normal ]" then
+                            local args = {
+                                [1] = v,
+                                [2] = 1
+                            }
+                            game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Inventory"):WaitForChild("UseItem"):FireServer(unpack(args))
+                            wait(5)
+                        end
+                    end
+                end
+            end)
+        end
+    end)
+end)
 
 
 
@@ -199,9 +259,6 @@ end)
 Sector:AddButton("Rejoin" , function()
     game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer)
 end)
-Sector:AddButton("HopServer" , function()
-    HopServer()
-end)
 Sector:AddButton("ResetCamera" , function()
     game:GetService("Workspace").CurrentCamera:Destroy()
     wait(.1)
@@ -211,28 +268,9 @@ Sector:AddButton("ResetCamera" , function()
     game:GetService("Players").LocalPlayer.CameraMaxZoomDistance = 100000
     game:GetService("Players").LocalPlayer.CameraMode = "Classic"
 end)
-
-local UIS = game:GetService("UserInputService")
-local Player = game.Players.LocalPlayer
-local Mouse = Player:GetMouse()
-function GetCharacter()
-    return game.Players.LocalPlayer.Character
-    end
-    function Teleport(pos)
-    local Char = GetCharacter()
-    if Char then
-        Char:MoveTo(pos)
-    end
-end
-UIS.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 and UIS:IsKeyDown(Enum.KeyCode.LeftControl) and _G.CtrlClickTP == true then
-        Teleport(Mouse.Hit.p)
-    end
-end)
-
 local Sector = Tab:CreateSector("Section2", "Right")
 Sector:AddKeybind("Keybind GUI", "Insert",true, function()
-    for i, v in pairs(game:GetService("CoreGui"):GetChildren()) do
+    for i, v in pairs(game.Players.LocalPlayer.PlayerGui:GetChildren()) do
         if v:FindFirstChild("main") then
             v.main.Visible = not v.main.Visible;
         end
@@ -253,17 +291,8 @@ spawn(function()
         end
     end)
 end)
-Sector:AddTextbox("FPS" , "20" , function(w)
-    _G.FPS = w
-end)
-Sector:AddToggle("SetFpsCap", false, function(o)
-    _G.Fpscap = o
-end)
 Sector:AddToggle("WhiteScreen", false, function(o)
     game:GetService("RunService"):Set3dRenderingEnabled(not o);
-end)
-Sector:AddToggle("Boosts", false, function(o)
-    _G.Boosts = o
 end)
 Sector:AddButton("infiniteyield" , function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
@@ -273,27 +302,6 @@ Sector:AddButton("DarkDex" , function()
 end)
 Sector:AddButton("RemoteSpy" , function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/DevSoGod/All/main/RemoteSpy", true))()
-end)
-Sector:AddButton("SUPER SECRET BUTTON" , function()
-    local soundId = "rbxassetid://6454805792"
-    local sound = Instance.new("Sound")
-    sound.SoundId = soundId
-    sound.Volume = 10
-    sound.Looped = true
-    sound.Parent = game.Players.LocalPlayer.Character
-    sound:Play()
-end)
-spawn(function()
-    pcall(function()
-        while wait() do
-            if _G.Boosts then
-                pcall(function()
-                    for v7,v8 in next,game:GetService("Workspace"):GetDescendants() do if (v8 and v8:IsA("Model")) then v8.LevelOfDetail="Disabled";v8.ModelStreamingMode="Nonatomic";elseif (v8 and v8:IsA("BasePart") and  not v8:IsA("MeshPart")) then v8.CastShadow=false;v8.Material="Plastic";v8.Reflectance=0;v8.MaterialVariant="";elseif (v8 and (v8:IsA("Decal") or v8:IsA("Texture"))) then v8.Transparency=1;elseif (v8 and v8:IsA("MeshPart")) then v8.CastShadow=false;v8.DoubleSided=false;v8.RenderFidelity="Performance";v8.TextureID=10385902758728956;elseif (v8 and v8:IsA("SpecialMesh")) then v8.TextureId=0;elseif (v8 and v8:IsA("ShirtGraphic")) then v8.Graphic=0;elseif (v8 and (v8:IsA("Shirt") or v8:IsA("Pants"))) then v8[v8.ClassName   .. "Template" ]=0;elseif (v8:IsA("Fire") or v8:IsA("SpotLight") or v8:IsA("Smoke") or v8:IsA("Sparkles")) then v8.Enabled=false;elseif v8:IsA("Explosion") then v8.BlastPressure=1;v8.BlastRadius=1;elseif (v8:IsA("ParticleEmitter") or v8:IsA("Trail")) then v8.Enabled=false;elseif (v8 and v8:IsA("Beam")) then v8.Enabled=false;elseif (v8 and v8:IsA("SurfaceAppearance")) then v8:Destroy();elseif (v8 and v8:IsA("Debris")) then v8:Destroy();elseif (v8 and v8:IsA("Attachment")) then v8.Visible=false;elseif (v8 and v8:IsA("MaterialVariant")) then v8:Destroy();end end for v9,v10 in next,game:GetService("Lighting"):GetDescendants() do if (v10 and (v10:IsA("Sky") or v10:IsA("Atmosphere") or v10:IsA("BloomEffect") or v10:IsA("BlurEffect") or v10:IsA("SunRaysEffect") or v10:IsA("DepthOfFieldEffect") or v10:IsA("Clouds") or v10:isA("PostEffect") or v10:IsA("ColorCorrectionEffect"))) then v10:Destroy();end end sethiddenproperty(game:GetService("Lighting"),"Technology",2);game:GetService("Lighting").GlobalShadows=0;game:GetService("Lighting").FogEnd=8999999488;game:GetService("Lighting").Brightness=0;sethiddenproperty(game:GetService("Workspace"):FindFirstChildOfClass("Terrain"),"Decoration",false);game:GetService("Workspace"):FindFirstChildOfClass("Terrain").WaterReflectance=0;game:GetService("Workspace"):FindFirstChildOfClass("Terrain").WaterTransparency=0.7;game:GetService("Workspace"):FindFirstChildOfClass("Terrain").WaterWaveSize=0;game:GetService("Workspace"):FindFirstChildOfClass("Terrain").WaterWaveSpeed=0;game:GetService("Lighting").ChildAdded:Connect(function(v11)spawn(function()v11:Destroy();end);end);game:GetService("Workspace").DescendantAdded:Connect(function(v12)spawn(function()if v12:IsA("Model") then v12.LevelOfDetail="Disabled";v12.ModelStreamingMode="Nonatomic";elseif (v12:IsA("BasePart") and  not v12:IsA("MeshPart")) then v12.CastShadow=false;v12.Material="Plastic";v12.Reflectance=0;v12.MaterialVariant="";elseif (v12:IsA("Decal") or v12:IsA("Texture")) then v12.Transparency=1;elseif v12:IsA("MeshPart") then v12.CastShadow=false;v12.DoubleSided=false;v12.RenderFidelity="Performance";v12.TextureID=10385902758728956;elseif v12:IsA("SpecialMesh") then v12.TextureId=0;elseif v12:IsA("ShirtGraphic") then v12.Graphic=0;elseif (v12:IsA("Shirt") or v12:IsA("Pants")) then v12[v12.ClassName   .. "Template" ]=0;elseif (v12:IsA("Fire") or v12:IsA("SpotLight") or v12:IsA("Smoke") or v12:IsA("Sparkles")) then v12.Enabled=false;elseif v12:IsA("Explosion") then v12.BlastPressure=1;v12.BlastRadius=1;elseif (v12:IsA("ParticleEmitter") or v12:IsA("Trail")) then v12.Enabled=false;elseif v12:IsA("Beam") then v12.Enabled=false;elseif v12:IsA("SurfaceAppearance") then v12:Destroy();elseif v12:IsA("Debris") then v12:Destroy();elseif v12:IsA("Attachment") then v12.Visible=false;elseif v12:IsA("MaterialVariant") then v12:Destroy();end end);end);
-                    wait(9e9)
-                end)
-            end
-        end
-    end)
 end)
 spawn(function()
     pcall(function()
@@ -319,17 +327,6 @@ spawn(function()
                         end
                         wait(9e9)
                     end)
-                end
-            end)
-        end
-    end)
-end)
-spawn(function()
-    pcall(function()
-        while wait(1) do
-            pcall(function()
-                if _G.Fpscap then
-                    setfpscap(tonumber(_G.FPS))
                 end
             end)
         end
