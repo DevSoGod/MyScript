@@ -16,7 +16,9 @@ end)
 Sector:AddToggle("SpinBiome", false, function(t)
     _G.SpinBiome = t
 end)
-
+Sector:AddToggle("Claim Gear Basing", false, function(t)
+    _G.Basing = t
+end)
 
 local RecalDis = 5
 local currpath = game:GetService("PathfindingService"):CreatePath({["WaypointSpacing"] = 5})
@@ -217,7 +219,25 @@ spawn(function()
         end
     end)
 end)
-
+spawn(function()
+    pcall(function()
+        while wait() do
+            pcall(function()
+                if _G.Basing then
+                    a = game:GetService("Players").LocalPlayer.PlayerGui.MainInterface.ShopFrame.InnerFrame["Gear Basing_Ingredients"]
+                    if a.Common.Completed.Visible == true and a.Uncommon.Completed.Visible == true and a.Rare.Completed.Visible == true and a.Good.Completed.Visible == true then
+                        for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.MainInterface.RemoteFunction:GetChildren()) do
+                            if string.find(v.Name,"Craft") and string.find(v.Name,"Client") then
+                                v:FireServer("Craft","Gear Basing")
+                                wait(1)
+                            end
+                        end
+                    end
+                end
+            end)
+        end
+    end)
+end)
 
 
 
