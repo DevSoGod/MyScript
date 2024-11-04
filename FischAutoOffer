@@ -1,0 +1,68 @@
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/DevSoGod/MyScript/main/library"))()
+local Window = library:CreateWindow("FischAutoOffer")
+local Tab = Window:CreateTab("Main")
+local Sector = Tab:CreateSector("Section1", "left")
+local dd1 = Sector:AddDropdown("Player Offer",{}, false ,false , function(v)
+    _G.SelectedOffer = v
+end)
+Sector:AddButton("Refresh Players", function()
+    repeat task.wait()
+        for i, v in pairs(dd1:getList()) do
+            dd1:Remove(tostring(v))
+        end
+    until #dd1:getList() <= 0
+    for i, v in pairs(game.Players:GetChildren()) do
+        if not table.find(dd1:getList(), v.Name) then
+            dd1:Add(v.Name)
+        end
+    end
+end)
+Sector:AddToggle("AutoOffer", false, function(t)
+    _G.AutoOffer = t
+end)
+
+local Sector = Tab:CreateSector("Section2", "Right")
+Sector:AddToggle("AutoAccept", false, function(t)
+    _G.AutoAccept = t
+end)
+
+spawn(function()
+    while wait(1) do
+        if _G.AutoOffer then
+            pcall(function()
+                for i,v in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
+                    if v:FindFirstChild("offer") then
+                        v.offer:FireServer(game.Players[_G.SelectedOffer])
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+spawn(function()
+    while wait() do
+        if _G.AutoAccept then
+            pcall(function()
+                if game:GetService("Players").LocalPlayer.PlayerGui.hud.safezone.bodyannouncements:FindFirstChild("offer") then
+                    game:GetService("GuiService").SelectedObject = game:GetService("Players").LocalPlayer.PlayerGui.hud.safezone.bodyannouncements.offer.confirm
+                    if game:GetService("GuiService").SelectedObject == game:GetService("Players").LocalPlayer.PlayerGui.hud.safezone.bodyannouncements.offer.confirm then
+                        game:GetService("VirtualInputManager"):SendKeyEvent(true, 13, false, game.Players.LocalPlayer)
+                        game:GetService("VirtualInputManager"):SendKeyEvent(false, 13, false, game.Players.LocalPlayer)
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+game:GetService("Players").LocalPlayer.Idled:connect(function()
+    game:GetService("VirtualUser"):CaptureController()
+    game:GetService("VirtualUser"):ClickButton2(Vector2.new())
+end)
+library:ConfigSystem("FischAutoOffer"):Load()
+while wait(1) do
+    pcall(function()
+        library:ConfigSystem("FischAutoOffer"):Save()
+    end)
+end
